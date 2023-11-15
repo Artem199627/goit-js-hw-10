@@ -1,0 +1,78 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  background-color: whitesmoke;
+  color: #212121;
+  line-height: 1.5;
+  font-weight: 600;
+  font-size: 16px;
+}
+img {
+  display: block;
+  max-width: 100%;
+  border-radius: 20px;
+}
+.is-hidden {
+  display: none;
+}
+.is-visible {
+  display: flex;
+}
+.box-image {
+  display: flex;
+  align-items: center;
+}
+.box {
+  width: 200px;
+}
+.loader-box {
+  margin: 50px;
+  display: flex;
+  justify-content: center;
+}
+.loader {
+  width: 64px;
+  height: 64px;
+  position: relative;
+  background-image: linear-gradient(black 16px, transparent 0),
+    linear-gradient(#ff3d00 16px, transparent 0),
+    linear-gradient(#ff3d00 16px, transparent 0),
+    linear-gradient(black 16px, transparent 0);
+  background-repeat: no-repeat;
+  background-size: 16px 16px;
+  background-position: left top, left bottom, right top, right bottom;
+  animation: rotate 1s linear infinite;
+}
+@keyframes rotate {
+  0% {
+    width: 64px;
+    height: 64px;
+    transform: rotate(0deg);
+  }
+  50% {
+    width: 30px;
+    height: 30px;
+    transform: rotate(180deg);
+  }
+  100% {
+    width: 64px;
+    height: 64px;
+    transform: rotate(360deg);
+  }
+}
+
+.cat-info {
+  margin-top: 5px;
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 40px;
+  border-radius: 15px;
+}
+.breed-select {
+  display: none;
+  max-width: 200px;
+  margin: auto;
+}
