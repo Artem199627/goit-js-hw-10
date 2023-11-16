@@ -5,29 +5,15 @@ body {
   background-color: whitesmoke;
   color: #212121;
   line-height: 1.5;
-  font-weight: 600;
-  font-size: 16px;
 }
 img {
   display: block;
-  max-width: 100%;
-  border-radius: 20px;
 }
 .is-hidden {
   display: none;
 }
-.is-visible {
-  display: flex;
-}
-.box-image {
-  display: flex;
-  align-items: center;
-}
-.box {
-  width: 200px;
-}
+
 .loader-box {
-  margin: 50px;
   display: flex;
   justify-content: center;
 }
@@ -63,16 +49,30 @@ img {
 }
 
 .cat-info {
-  margin-top: 5px;
-  padding: 5px;
   display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 40px;
-  border-radius: 15px;
+  align-items: center;
+  gap: 10px;
 }
 .breed-select {
-  display: none;
-  max-width: 200px;
+  display: flex;
   margin: auto;
+}
+
+.image-container {
+  width: 50%;
+  height: 50%;
+}
+
+.image-container img {
+  height: 100%;
+  width: 100%;
+  border-radius: 30px;
+}
+.cat-temp-span {
+  font-weight: 900;
+  font-size: 20px;
+}
+
+.cat-body {
+  width: 30%;
 }

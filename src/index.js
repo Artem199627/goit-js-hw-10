@@ -1,69 +1,66 @@
 import { fetchBreeds, fetchCatByBreed } from "./cat-api";
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
-import "./style.css";
-import SlimSelect from 'slim-select';
-import 'slim-select/dist/slimselect.css';
 
-const ref = {
-     select  : document.querySelector(".breed-select"),
-     loader : document.querySelector(".loader"),
-    div: document.querySelector(".cat-info"),
-     error : document.querySelector(".error"),
-};
-const { select, loader, div, error } = ref;
-select.classList.add('is-hidden');
-error.classList.add("is-hidden");
-
-select.addEventListener("change", onSelectBreed);
-
-updateSelect();
-function updateSelect(data) {
-    fetchBreeds(data).then(data => {
-        loader.classList.replace("loader", "is-hidden");
-        let markup = data.map(({ name, id }) => {
-            return `<option value ="${id}">${name}</option>`;
+export const select = document.querySelector(".breed-select");
+export const loader = document.querySelector(".loader");
+ const div = document.querySelector(".cat-info");
+ 
+fetchBreeds().then(breeds => {
+    renderSelect(breeds);
+    loader.classList.add('is-hidden');
+    select.classList.remove('is-hidden');
+})
+        .catch(error => {
+            select.classList.add('is-hidden');
+            div.classList.add('is-hidden');
+            loader.classList.add('is-hidden');
+            Notify.failure('Oops! Something went wrong! Try reloading the page!');
+            console.log(error);
         });
-        select.insertAdjacentHTML("beforeend", markup);
-        new SlimSelect({
-            select: select,
-        });
-    }).catch(onFetchError).finally(() => {
-        loader.classList.replace("is-hidden", "loader");
-        select.classList.replace("is-hidden", "is-visible");
-    });
-}
-
-function onSelectBreed(evt) {
-    loader.classList.replace("is-hidden", "loader");
-    select.classList.add("is-hidden");
+   
+select.addEventListener("input", evt => {
+    evt.preventDefault();
     div.classList.add("is-hidden");
-
-    const breedId = evt.currentTarget.value;
-    fetchCatByBreed(breedId).then(data => {
-        loader.classList.replace("loader", "is-hidden");
-        select.classList.remove("is-hidden");
-        const { url, breeds } = data[0];
-        div.innerHTML = `<div class="box-image"><img src="${url}" alt="${breeds[0].name}" width="400"/>
-      </div>
-      <div class="box"><h1>${breeds[0].name}</h1><p>${breeds[0].description}</p><p><b>Temperament:</b>${breeds[0].temperament}</p></div>`;
+    loader.classList.remove("is-hidden");
+    const breedId = select.options[select.selectedIndex].value;
+    fetchCatByBreed(breedId).then(cat => {
+        renderCat(cat);
+        loader.classList.add("is-hidden");
         div.classList.remove("is-hidden");
-    }).catch(onFetchError);
+    }).catch(err => {
+        div.classList.add('is-hidden');
+        loader.classList.add('is-hidden');
+        Notify.failure('Oops! Something went wrong! Try reloading the page!');
+        // console.log(err);
+    });
+});
+function renderSelect(breeds) {
+  const markup = breeds
+    .map(breed => {
+      return `<option value="${breed.id}">${breed.name}</option>`;
+    })
+    .join('');
+  select.insertAdjacentHTML("beforeend", markup);
 }
-function onFetchError(error) {
-    select.classList.remove("is-hidden");
-    loader.classList.replace("loader", "is-hidden");
-    div.style.display = "none";
 
-    Notify.failure(
-    
-    'Oops! Something went wrong! Try reloading the page or select another cat breed!',
-    {
-      position: 'center-center',
-      timeout: 5000,
-      width: '200px',
-      fontSize: '20px',
-    }
-  );
+function renderData(cat) {
+  const image = cat[0].url;
+  const catTemperament = cat[0].breeds[0].temperament;
+  const catName = cat[0].breeds[0].name;
+  const catDescription = cat[0].breeds[0].description;
+  return `
+<div class="image-container">
+  <img src="${image}" alt="${catName}" class="cat-image" />
+</div>
+<div class="cat-body">
+  <h4 class="cat-name">${catName}</h4>
+  <p>${catDescription}</p>
+  <p class="cat-temperament"><span class="cat-temp-span">Temperament:</span> ${catTemperament}</p>
+</div>`;
+}
+function renderCat(cat) {
+  const markup = renderData(cat);
+  div.innerHTML = markup;
 }
 
 
