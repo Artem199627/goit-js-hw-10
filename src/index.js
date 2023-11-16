@@ -31,7 +31,7 @@ select.addEventListener("input", evt => {
         div.classList.add('is-hidden');
         loader.classList.add('is-hidden');
         Notify.failure('Oops! Something went wrong! Try reloading the page!');
-        // console.log(err);
+        console.log(err);
     });
 });
 function renderSelect(breeds) {
